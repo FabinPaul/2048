@@ -1,6 +1,6 @@
 package com.fabinpaul.play2048.logic
 
-interface `2048` {
+interface Game2048 {
 
     fun swipeRight()
 
@@ -12,5 +12,5 @@ interface `2048` {
 
     fun getCurrentScore(): Int
 
-    fun newGame()
+    fun newGame(): GameGrid
 }

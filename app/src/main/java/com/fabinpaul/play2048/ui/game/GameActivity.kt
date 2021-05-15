@@ -3,8 +3,10 @@ package com.fabinpaul.play2048.ui.game
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
 import com.fabinpaul.play2048.R
 import com.fabinpaul.play2048.databinding.ActivityGameBinding
 import com.fabinpaul.play2048.databinding.ItemGridCellBinding
@@ -20,6 +22,7 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_game)
         binding.viewModel = viewModel
+        binding.lifecycleOwner = this
         setSupportActionBar(binding.toolbar)
 
         setUpGrid()
@@ -30,15 +33,32 @@ class GameActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    private fun setUpGrid() {
-        for (i in 0 until GameViewModel.GRID_SIZE) {
-            for (j in 0 until GameViewModel.GRID_SIZE) {
-                val itemBinding =
-                    ItemGridCellBinding.inflate(layoutInflater, binding.glGameGrid, false)
-                itemBinding.tile = viewModel.gameGrid.tiles[i][j]
-                binding.glGameGrid.addView(itemBinding.root)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.newGame -> {
+                viewModel.newGame()
+                true
             }
+            else -> return super.onOptionsItemSelected(item)
         }
+
+    }
+
+    private fun setUpGrid() {
+        viewModel.gameGrid.observe(this, { gameGrid ->
+            if (binding.glGameGrid.childCount > 0) {
+                binding.glGameGrid.removeAllViews()
+            }
+            for (i in 0 until gameGrid.size) {
+                for (j in 0 until gameGrid.size) {
+                    val itemBinding =
+                        ItemGridCellBinding.inflate(layoutInflater, binding.glGameGrid, false)
+                    itemBinding.tile = gameGrid.tiles[i][j]
+                    binding.glGameGrid.addView(itemBinding.root)
+                    itemBinding.lifecycleOwner = this
+                }
+            }
+        })
     }
 
 }

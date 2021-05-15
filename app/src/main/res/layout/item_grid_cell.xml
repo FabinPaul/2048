@@ -7,17 +7,18 @@
 
         <import type="androidx.core.content.ContextCompat" />
 
+        <import type="com.fabinpaul.play2048.logic.Tile" />
+
         <variable
             name="tile"
             type="com.fabinpaul.play2048.logic.Tile" />
     </data>
 
-    <!--    app:cardBackgroundColor="@{ContextCompat.getColor(context, tile.bgColor)}"-->
     <com.fabinpaul.play2048.view.SquareCardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:cardBackgroundColor="@color/light_green_96"
+        app:cardBackgroundColor="@{ContextCompat.getColor(context, tile.bgColor)}"
         app:layout_columnWeight="1"
         app:layout_rowWeight="1">
 
@@ -26,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="@{String.valueOf(tile.value)}"
+            android:text="@{Tile.valueOf(tile.value)}"
             tools:text="2" />
     </com.fabinpaul.play2048.view.SquareCardView>
 </layout>
