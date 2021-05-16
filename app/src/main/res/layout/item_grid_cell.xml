@@ -28,6 +28,9 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@{Tile.valueOf(tile.value)}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             tools:text="2" />
     </com.fabinpaul.play2048.view.SquareCardView>
 </layout>

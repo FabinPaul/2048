@@ -1,5 +1,7 @@
 package com.fabinpaul.play2048.di
 
+import com.fabinpaul.play2048.data.ScoreDataSource
+import com.fabinpaul.play2048.data.SharePreferenceScoreDS
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -19,6 +21,11 @@ abstract class GameModuleInterface {
     abstract fun gameImplementationInstance(
         gameImpl: Game2048Impl
     ): Game2048
+
+    @Binds
+    abstract fun sharedPrefScoreDataSourceInstance(
+        scoreDs: SharePreferenceScoreDS
+    ): ScoreDataSource
 }
 
 @InstallIn(SingletonComponent::class)

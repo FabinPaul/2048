@@ -1,12 +1,12 @@
 package com.fabinpaul.play2048.ui.game
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.Observable
 import com.fabinpaul.play2048.R
 import com.fabinpaul.play2048.databinding.ActivityGameBinding
 import com.fabinpaul.play2048.databinding.ItemGridCellBinding

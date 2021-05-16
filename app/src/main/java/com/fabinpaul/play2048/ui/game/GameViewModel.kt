@@ -3,6 +3,7 @@ package com.fabinpaul.play2048.ui.game
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.fabinpaul.play2048.data.ScoreDataSource
 import com.fabinpaul.play2048.logic.GameGrid
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -10,7 +11,8 @@ import com.fabinpaul.play2048.logic.Game2048
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
-    private val gameImpl: Game2048
+    private val gameImpl: Game2048,
+    private val scoreDataSource: ScoreDataSource
 ) : ViewModel() {
 
     private val _gameGrid = MutableLiveData(gameImpl.newGame())
@@ -21,29 +23,46 @@ class GameViewModel @Inject constructor(
     val currentScore: LiveData<Int>
         get() = _currentScore
 
+    private val _highScore = MutableLiveData(scoreDataSource.getHighScore())
+    val highScore: LiveData<Int>
+        get() = _highScore
+
+
     fun onUpBtnClick() {
         gameImpl.swipeUp()
-        _currentScore.value = gameImpl.getCurrentScore()
+        updateScore()
+
     }
 
     fun onDownBtnClick() {
         gameImpl.swipeDown()
-        _currentScore.value = gameImpl.getCurrentScore()
+        updateScore()
     }
 
     fun onLeftBtnClick() {
         gameImpl.swipeLeft()
-        _currentScore.value = gameImpl.getCurrentScore()
+        updateScore()
     }
 
     fun onRightBtnClick() {
         gameImpl.swipeRight()
-        _currentScore.value = gameImpl.getCurrentScore()
+        updateScore()
     }
 
     fun newGame() {
         _gameGrid.value = gameImpl.newGame()
-        _currentScore.value = gameImpl.getCurrentScore()
+        updateScore()
+    }
+
+    fun updateScore() {
+        val currentScore = gameImpl.getCurrentScore()
+        _currentScore.value = currentScore
+        highScore.value?.let {
+            if (currentScore > it) {
+                _highScore.value = currentScore
+                scoreDataSource.saveHighScore(currentScore)
+            }
+        }
     }
 
     companion object {
