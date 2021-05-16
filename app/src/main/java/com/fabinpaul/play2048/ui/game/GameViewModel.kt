@@ -27,6 +27,12 @@ class GameViewModel @Inject constructor(
     val highScore: LiveData<Int>
         get() = _highScore
 
+    val hasLost: LiveData<Boolean>
+        get() = gameImpl.hasLost()
+
+    val hasWon: LiveData<Boolean>
+        get() = gameImpl.hasWon()
+
 
     fun onUpBtnClick() {
         gameImpl.swipeUp()
@@ -54,7 +60,11 @@ class GameViewModel @Inject constructor(
         updateScore()
     }
 
-    fun updateScore() {
+    fun keepGoing() {
+        gameImpl.keepGoing()
+    }
+
+    private fun updateScore() {
         val currentScore = gameImpl.getCurrentScore()
         _currentScore.value = currentScore
         highScore.value?.let {

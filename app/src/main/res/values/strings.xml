@@ -8,4 +8,8 @@
     <string name="left">Left</string>
     <string name="right">Right</string>
     <string name="saved_high_score_key">saved_high_score_key</string>
+    <string name="game_over">Game Over</string>
+    <string name="try_again">Try Again</string>
+    <string name="keep_going">Keep going</string>
+    <string name="you_win">You win!</string>
 </resources>

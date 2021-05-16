@@ -52,11 +52,14 @@ data class Tile(
 val colorArray =
     arrayOf(
         R.color.light_blue_30,
-        R.color.blue_37,
         R.color.light_green_96,
+        R.color.lime_green_96,
+        R.color.blue_37,
+        R.color.blue_63,
         R.color.purple_70,
         R.color.pink_ff,
         R.color.yellow_f2,
         R.color.light_red_ff,
+        R.color.red_ff,
         R.color.light_brown_ff
     )

@@ -1,5 +1,7 @@
 package com.fabinpaul.play2048.logic
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.fabinpaul.play2048.ui.game.GameViewModel
 import java.util.*
 import javax.inject.Inject
@@ -15,9 +17,19 @@ class Game2048Impl @Inject constructor(
     private var currentScore = 0
     private val gameGrid = GameGrid(size = gridSize)
     private val random = Random()
-    private var canMove = true
+
+    private val _hasLost = MutableLiveData(false)
+    val hasLost: LiveData<Boolean>
+        get() = _hasLost
+
+    private val _hasWon = MutableLiveData(false)
+    val hasWon: LiveData<Boolean>
+        get() = _hasWon
 
     override fun swipeRight() {
+        if (_hasLost.value == true) {
+            return
+        }
         var modified = false
         for (i in 0 until gridSize) {
             for (j in gridSize - 1 downTo 0) {
@@ -51,6 +63,9 @@ class Game2048Impl @Inject constructor(
     }
 
     override fun swipeLeft() {
+        if (_hasLost.value == true) {
+            return
+        }
         var modified = false
         for (i in 0 until gridSize) {
             for (j in 0 until gridSize) {
@@ -84,6 +99,9 @@ class Game2048Impl @Inject constructor(
     }
 
     override fun swipeUp() {
+        if (_hasLost.value == true) {
+            return
+        }
         var modified = false
         for (i in 0 until gridSize) {
             for (j in 0 until gridSize) {
@@ -117,6 +135,9 @@ class Game2048Impl @Inject constructor(
     }
 
     override fun swipeDown() {
+        if (_hasLost.value == true) {
+            return
+        }
         var modified = false
         for (i in 0 until gridSize) {
             for (j in gridSize - 1 downTo 0) {
@@ -154,6 +175,8 @@ class Game2048Impl @Inject constructor(
     }
 
     override fun newGame(): GameGrid {
+        _hasWon.value = false
+        _hasLost.value = false
         for (i in 0 until GameViewModel.GRID_SIZE) {
             for (j in 0 until GameViewModel.GRID_SIZE) {
                 gameGrid.tiles[i][j] = Tile(i, j)
@@ -165,8 +188,20 @@ class Game2048Impl @Inject constructor(
         return gameGrid
     }
 
+    override fun hasWon(): LiveData<Boolean> {
+        return hasWon
+    }
+
+    override fun hasLost(): LiveData<Boolean> {
+        return hasLost
+    }
+
+    override fun keepGoing() {
+        _hasWon.value = false
+    }
+
     private fun addNewField() {
-        if (!canMove) {
+        if (hasLost.value == true) {
             return
         }
         var tile: Tile?
@@ -183,10 +218,10 @@ class Game2048Impl @Inject constructor(
     }
 
     private fun canMove(x: Int, y: Int): Boolean {
-        if (y >= gridSize - 1 || x >= gridSize - 1) {
-            return false
-        }
         val currentTile = gameGrid.tiles[x][y]
+        if (y >= gridSize - 1 || x >= gridSize - 1) {
+            return currentTile?.getTileValue() == null
+        }
         val rightTile = gameGrid.tiles[x][y + 1]
         val downTile = gameGrid.tiles[x + 1][y]
         return (currentTile?.getTileValue() == null
@@ -205,8 +240,15 @@ class Game2048Impl @Inject constructor(
                 if (!canMove && canMove(i, j)) {
                     canMove = true
                 }
+                if (currentTile?.value?.value == WINING_VALUE) {
+                    _hasWon.value = true
+                }
             }
         }
-        this.canMove = canMove
+        _hasLost.value = !canMove
+    }
+
+    companion object {
+        private const val WINING_VALUE = 2048
     }
 }

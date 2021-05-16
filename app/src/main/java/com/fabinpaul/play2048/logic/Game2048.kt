@@ -1,5 +1,7 @@
 package com.fabinpaul.play2048.logic
 
+import androidx.lifecycle.LiveData
+
 interface Game2048 {
 
     fun swipeRight()
@@ -13,4 +15,10 @@ interface Game2048 {
     fun getCurrentScore(): Int
 
     fun newGame(): GameGrid
+
+    fun hasWon(): LiveData<Boolean>
+
+    fun hasLost(): LiveData<Boolean>
+
+    fun keepGoing()
 }

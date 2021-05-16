@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.fabinpaul.play2048.ui.game.GameViewModel" />
@@ -123,6 +125,111 @@
                 app:layout_constraintTop_toBottomOf="@+id/llHighScore"
                 app:layout_constraintVertical_bias="0.0"
                 app:rowCount="@{viewModel.gameGrid.size}" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clGameOver"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/very_light_blue_de"
+                android:visibility="@{viewModel.hasLost ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="@+id/glGameGrid"
+                app:layout_constraintEnd_toEndOf="@+id/glGameGrid"
+                app:layout_constraintStart_toStartOf="@+id/glGameGrid"
+                app:layout_constraintTop_toTopOf="@+id/glGameGrid"
+                tools:visibility="gone">
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvGameOver"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/game_over"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:onClick="@{() -> viewModel.newGame()}"
+                    android:text="@string/try_again"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvGameOver" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clGameWon"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/very_light_blue_de"
+                android:visibility="@{viewModel.hasWon ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="@+id/glGameGrid"
+                app:layout_constraintEnd_toEndOf="@+id/glGameGrid"
+                app:layout_constraintStart_toStartOf="@+id/glGameGrid"
+                app:layout_constraintTop_toTopOf="@+id/glGameGrid"
+                tools:visibility="gone">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvGameWon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/you_win"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:onClick="@{() -> viewModel.keepGoing()}"
+                    android:text="@string/keep_going"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvGameWon" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:onClick="@{() -> viewModel.newGame()}"
+                    android:text="@string/try_again"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/tvGameWon" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnUp"
