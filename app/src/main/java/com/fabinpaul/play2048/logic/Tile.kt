@@ -8,6 +8,7 @@ data class Tile(
     val x: Int = 0,
     val y: Int = 0,
     val value: MutableLiveData<Int?> = MutableLiveData<Int?>(null),
+    var nextPossibleValue: Int? = null,
     val bgColor: MutableLiveData<Int> = MutableLiveData<Int>(R.color.light_blue_30)
 ) {
 
@@ -19,6 +20,19 @@ data class Tile(
                 val index = (ln(newValue.toDouble()) / ln(2.0)).toInt()
                 bgColor.value = colorArray[index]
             }
+        }
+        nextPossibleValue = newValue
+    }
+
+    fun getTileValue(): Int? {
+        return value.value
+    }
+
+    fun updateValue(modified: Boolean) {
+        if (modified && nextPossibleValue != value.value) {
+            setValue(nextPossibleValue)
+        } else if (!modified) {
+            nextPossibleValue = value.value
         }
     }
 
